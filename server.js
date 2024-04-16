@@ -1,8 +1,10 @@
 const express = require("express");
 const hndlError = require("./Error/handlingError");
+const conDb = require("./Config/dbConn");
 const dotenv = require("dotenv").config();
 const app = express();
 
+conDb();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
