@@ -3,7 +3,7 @@ const Contact = require("../models/contactModel");
 
 //@route GET /api/contacts
 const get_contacts = asyncHandler(async(req, res)=>{
-    const contact = await Contact.find();
+    const contact = await Contact.find({userID: req.user.id});
     res.status(200).json(contact);
 });
 
@@ -20,6 +20,7 @@ const post_contact = asyncHandler(async(req, res)=>{
         name,
         email,
         phoneNo,
+        userID: req.user.id,
     });
 
     res.status(201).json(contact);
@@ -42,6 +43,10 @@ const put_contact = asyncHandler(async(req, res)=>{
         res.status(404);
         throw new Error("Contact Unavailable");
     }
+    if(contact.userID.toString()!==req.user.id){
+        res.status(403);
+        throw new Error("you can't Update other user Contacts!");
+    }
     const update = await Contact.findByIdAndUpdate(req.params.id, req.body, {new:true});
 
     res.status(200).json(update);
@@ -54,7 +59,11 @@ const delete_contact = asyncHandler(async(req, res)=>{
         res.status(404);
         throw new Error("Contact Unavailable");
     }
-    await Contact.deleteOne();
+    if(contact.userID.toString()!==req.user.id){
+        res.status(403);
+        throw new Error("you can't Delete other user Contacts!");
+    }
+    await Contact.deleteOne({_id: req.params.id});
     res.status(200).json(contact);
 });
 

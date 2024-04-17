@@ -46,11 +46,11 @@ const login = asyncHandler(async(req,res)=>{
     if(user && (await bcrypt.compare(password,user.password))){
         const accessToken = jwt.sign({
             user:{
-                email:user.email,
-                id:user.id,
+                email: user.email,
+                id: user.id,
             },
         },
-        process.env.ACCESS_TOKEN,{expiresIn:"1m"}
+        process.env.ACCESS_TOKEN,{expiresIn:"20m"}
     );
         res.status(200).json({accessToken});
     }else{
@@ -61,7 +61,7 @@ const login = asyncHandler(async(req,res)=>{
 //@route GET /api/current
 //@private access only
 const current = asyncHandler(async(req,res)=>{
-    res.json({message:"Current Details"});
+    res.json(req.user);
 });
 
 module.exports = {register,login,current};
