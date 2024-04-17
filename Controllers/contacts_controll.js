@@ -49,7 +49,13 @@ const put_contact = asyncHandler(async(req, res)=>{
 
 //@route DELETE /api/contacts/:id
 const delete_contact = asyncHandler(async(req, res)=>{
-    res.status(200).json({message:`delete contact of id ${req.params.id}` });
+    const contact = await Contact.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Unavailable");
+    }
+    await Contact.deleteOne();
+    res.status(200).json(contact);
 });
 
 module.exports={get_contacts, post_contact, get_contact, put_contact, delete_contact};
