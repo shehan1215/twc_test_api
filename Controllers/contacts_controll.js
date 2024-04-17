@@ -1,8 +1,10 @@
 const asyncHandler = require("express-async-handler");
+const Contact = require("../models/contactModel");
 
 //@route GET /api/contacts
 const get_contacts = asyncHandler(async(req, res)=>{
-    res.status(200).json({message:"All user's contacts"});
+    const contact = await Contact.find();
+    res.status(200).json(contact);
 });
 
 //@route CREATE /api/contacts/:id
@@ -14,17 +16,35 @@ const post_contact = asyncHandler(async(req, res)=>{
         res.status(400);
         throw new Error("Fill the all fields");
     }
-    res.status(201).json({message:"Add the contacts"});
+    const contact = await Contact.create({
+        name,
+        email,
+        phoneNo,
+    });
+
+    res.status(201).json(contact);
 });
 
 //@route GET /api/contacts/:id
 const get_contact = asyncHandler(async(req, res)=>{
-    res.status(200).json({message:`Contact for ${req.params.id}` });
+    const contact = await Contact.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Unavailable");
+    }
+    res.status(200).json(contact);
 });
 
 //@route UPDATE /api/contacts/:id
 const put_contact = asyncHandler(async(req, res)=>{
-    res.status(200).json({message:`update the contacts of id ${req.params.id}`});
+    const contact = await Contact.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Unavailable");
+    }
+    const update = await Contact.findByIdAndUpdate(req.params.id, req.body, {new:true});
+
+    res.status(200).json(update);
 });
 
 //@route DELETE /api/contacts/:id
