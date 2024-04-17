@@ -1,17 +1,13 @@
 const express = require("express");
+const {register,login,current} =require("../Controllers/user_controller");
+
 const router = express.Router();
 
-router.post("/register",(req,res)=>{
-    res.json({message:"Register to the Contact Portal"});   //Create the user's Router
-});
+router.post("/register",register);
 
-router.post("/login",(req,res)=>{
-    res.json({message:"Login"});
-});
+router.post("/login",login);
 
-router.get("/current",(req,res)=>{
-    res.json({message:"Current Details"});
-});
+router.get("/current",current);
 
 module.exports = router;
 
