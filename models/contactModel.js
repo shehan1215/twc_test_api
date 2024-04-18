@@ -14,10 +14,11 @@ const contact = mongoose.Schema({
         type: String,
         required: [true, "Please add the gender"],
     },
-    email:{
-        type:String,
-        required:[true,"Enter the Email Address"],
-    },
+    email: {
+        type: String,
+        required: [true, "Add user email address"],
+        unique: [true, "Email address already exist"],
+      },
     phoneNo:{
         type:String,
         required:[true,"Enter the Phone No"],
