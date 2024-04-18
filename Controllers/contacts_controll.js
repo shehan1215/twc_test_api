@@ -54,9 +54,7 @@ const getContacts = asyncHandler(async (req, res) => {
     }
   
     const updatedContact = await Contact.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
+      req.params.id,req.body,{ new: true }
     );
   
     res.status(200).json(updatedContact);
