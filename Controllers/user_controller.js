@@ -5,8 +5,8 @@ const jwt = require("jsonwebtoken");
 
 //@route GET /api/register
 const register = asyncHandler(async(req,res)=>{
-    const {email,password,confirmPassword} = req.body;
-    if(!email || !password || !confirmPassword){
+    const {username, email, password} = req.body;
+    if(!username || !email || !password){
         res.status(400);
         throw new Error("Please fill the all fields");
     }
@@ -14,14 +14,13 @@ const register = asyncHandler(async(req,res)=>{
     const userVerified = await availableUser.findOne({email});
     if(userVerified){
         res.status(400);
-        throw new Error("error: Email is already exist!");
+        throw new Error("Already registerd user!!");
     }
     const hashedPw = await bcrypt.hash(password, 10);
-    console.log("Password: ", hashedPw);
     const user = await availableUser.create({
+        username,
         email,
-        password:hashedPw,
-        confirmPassword,
+        password: hashedPw,
     });
     console.log(`Created Successfully ${user}`);
     if(user){
@@ -31,7 +30,7 @@ const register = asyncHandler(async(req,res)=>{
         throw new Error("Not valid Data!");
     }
 
-    res.json({message:"Register to the Contact Portal"}); 
+    res.status(200).json({message:"Register to the Contact Portal"}); 
 });
 //@route GET /api/login
 const login = asyncHandler(async(req,res)=>{
