@@ -11,18 +11,21 @@ const get_contacts = asyncHandler(async(req, res)=>{
 const post_contact = asyncHandler(async(req, res)=>{
     console.log("body of:", req.body);
     //to create the error handle
-    const {name,email,phoneNo} = req.body;
-    if(!name || !email || !phoneNo){
+    const {name,gender,email,phoneNo} = req.body;
+    if(!name || !gender || !email || !phoneNo){
         res.status(400);
         throw new Error("Fill the all fields");
     }
     const contact = await Contact.create({
         name,
+        gender,
         email,
         phoneNo,
         userID: req.user.id,
     });
 
+    const contacts = await Contact.find({ userID: req.user.id });
+    console.log(contacts);
     res.status(201).json(contact);
 });
 

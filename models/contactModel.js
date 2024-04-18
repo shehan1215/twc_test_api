@@ -10,6 +10,10 @@ const contact = mongoose.Schema({
         type:String,
         required:[true,"Enter the Full Name"],
     },
+    gender: {
+        type: String,
+        required: [true, "Please add the gender"],
+    },
     email:{
         type:String,
         required:[true,"Enter the Email Address"],
