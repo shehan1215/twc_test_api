@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const contact = mongoose.Schema({
-    userID:{
+    user_id:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"user",
@@ -19,9 +19,9 @@ const contact = mongoose.Schema({
         required: [true, "Add user email address"],
         unique: [true, "Email address already exist"],
       },
-    phoneNo:{
+    phone:{
         type:String,
-        required:[true,"Enter the Phone No"],
+        required:[true,"Enter the user Phone No"],
     },
 },{
     timestamps:true,
